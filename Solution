@@ -1,0 +1,60 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    Map<TreeNode,TreeNode> parent;
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        parent=new HashMap();
+        getp(root,root);
+        if(root==null)return new ArrayList();
+        Set<TreeNode> seen=new HashSet();
+        Queue<TreeNode> qq=new LinkedList();
+        qq.offer(target);
+        seen.add(target);
+        int dist=0;
+        while(!qq.isEmpty()){
+            int size=qq.size();
+            if(dist==k){
+              List<Integer> list=new ArrayList();
+              for(TreeNode current:qq){
+                  if(current!=null){
+                  list.add(current.val);
+              }}
+                return list;
+            }
+            else  {
+                for(int i=0;i<size;i++){
+                    TreeNode temp=qq.poll();
+                if(temp.left!=null && !seen.contains(temp.left)){
+                qq.offer(temp.left);
+                seen.add(temp.left);
+            }
+                if(temp.right!=null && !seen.contains(temp.right)){
+                   qq.offer(temp.right);
+                   seen.add(temp.right);
+               }
+               TreeNode  np=parent.get(temp);
+                if(!seen.contains(np)){
+                    qq.offer(np);
+                    seen.add(np);
+                }
+        }}
+            dist++;
+        }
+        return new ArrayList();
+        
+    }
+    private void getp(TreeNode node,TreeNode par){
+        if(node!=null){
+            parent.put(node,par);
+            getp(node.left,node);
+            getp(node.right,node);
+        }
+    }
+}
